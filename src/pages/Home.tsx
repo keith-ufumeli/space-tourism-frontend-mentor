@@ -10,7 +10,7 @@ export function Home() {
           <h2 className="font-barlow-condensed text-space-light text-base md:text-xl lg:text-2xl tracking-[2.7px] md:tracking-[3.38px] uppercase mb-4 md:mb-6">
             So, you want to travel to
           </h2>
-          <h1 className="font-bellefair text-space-white text-[80px] md:text-[150px] leading-[100px] md:leading-[150px] mb-6 md:mb-8">
+          <h1 className="font-bellefair uppercase text-space-white text-[80px] md:text-[150px] leading-[100px] md:leading-[150px] mb-6 md:mb-8">
             Space
           </h1>
           <p className="font-barlow text-space-light text-[15px] md:text-base lg:text-lg leading-6 md:leading-7 lg:leading-8">
