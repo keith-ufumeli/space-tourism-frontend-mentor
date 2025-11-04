@@ -58,13 +58,21 @@ export function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 lg:pl-12 lg:pr-0">
-      {/* Logo */}
-      <Link to="/" className="mt-6 md:mt-0" aria-label="Home">
-        <img src={logo} alt="Space Tourism Logo" className="h-10 w-10 md:h-12 md:w-12" />
-      </Link>
+      <div className="flex items-center lg:flex-1 lg:relative">
+        {/* Logo */}
+        <Link to="/" className="mt-6 md:mt-0 lg:mt-0 relative z-30" aria-label="Home">
+          <img src={logo} alt="Space Tourism Logo" className="h-10 w-10 md:h-12 md:w-12" />
+        </Link>
+
+        {/* Decorative Line - Desktop only */}
+        <div 
+          className="hidden lg:block absolute left-[12rem] top-1/2 -translate-y-1/2 h-[1px] right-0 bg-space-white/50 pointer-events-none z-[15]" 
+          aria-hidden="true"
+        />
+      </div>
 
       {/* Desktop Navigation */}
-      <div className="hidden lg:flex lg:items-center lg:gap-12 lg:pl-20 lg:pr-20 lg:backdrop-blur-xl lg:bg-space-white/5 lg:h-24">
+      <div className="hidden lg:flex lg:items-center lg:gap-12 lg:pl-20 lg:pr-20 lg:backdrop-blur-xl lg:bg-space-white/5 lg:h-24 lg:relative lg:z-20">
         <NavLinks />
       </div>
 
