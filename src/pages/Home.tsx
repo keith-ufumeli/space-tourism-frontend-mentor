@@ -22,11 +22,11 @@ export function Home() {
 
         {/* Explore Button */}
         <div className="flex-1 flex items-center justify-center lg:justify-end mt-12 md:mt-16 lg:mt-0">
-          <Link to="/destination" aria-label="Explore destinations">
+          <Link to="/destination" aria-label="Explore destinations" className="group inline-block">
             <Button
-              className="relative w-[150px] h-[150px] md:w-[242px] md:h-[242px] lg:w-[274px] lg:h-[274px] rounded-full bg-space-white text-space-dark font-bellefair text-xl md:text-2xl lg:text-3xl tracking-[1.25px] uppercase hover:ring-[88px] hover:ring-space-white/10 transition-all focus-visible:ring-2 focus-visible:ring-space-white focus-visible:ring-offset-4 focus-visible:ring-offset-space-dark"
+              className="relative w-[150px] h-[150px] md:w-[242px] md:h-[242px] lg:w-[274px] lg:h-[274px] rounded-full bg-space-white text-space-dark hover:text-space-dark hover:bg-space-white font-bellefair text-xl md:text-2xl lg:text-3xl tracking-[1.25px] uppercase transition-all duration-500 focus-visible:ring-2 focus-visible:ring-space-white focus-visible:ring-offset-4 focus-visible:ring-offset-space-dark overflow-visible before:absolute before:inset-0 before:rounded-full before:border-[1px] before:border-space-white/10 before:scale-100 before:transition-all before:duration-700 before:pointer-events-none before:ease-out hover:before:scale-[2.8] hover:before:border-space-white/25"
             >
-              Explore
+              <span className="relative z-10 text-space-dark">Explore</span>
             </Button>
           </Link>
         </div>
