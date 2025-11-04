@@ -7,12 +7,20 @@ export default {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			'bellefair': ['Bellefair', 'serif'],
+  			'barlow': ['Barlow', 'sans-serif'],
+  			'barlow-condensed': ['Barlow Condensed', 'sans-serif'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+  			'space-dark': '#0B0D17',
+  			'space-light': '#D0D6F9',
+  			'space-white': '#FFFFFF',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
