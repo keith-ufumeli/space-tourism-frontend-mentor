@@ -103,7 +103,34 @@ export function Layout({ children }: LayoutProps) {
       <Navigation />
 
       {/* Main Content */}
-      <main className="pt-24 md:pt-32 lg:pt-40">{children}</main>
+      <main className="pt-24 md:pt-32 lg:pt-40 min-h-[calc(100vh-12rem)] pb-20">
+        {children}
+      </main>
+
+      {/* Footer */}
+      <footer className="py-6 px-6 md:px-10 lg:px-20 text-center">
+        <p className="font-barlow text-space-light text-sm md:text-base">
+          Challenge by{' '}
+          <a
+            href="https://www.frontendmentor.io?ref=challenge"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-space-white hover:text-space-light transition-colors underline"
+          >
+            Frontend Mentor
+          </a>
+          . Coded by{' '}
+          <a
+            href="https://github.com/keith-ufumeli"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-space-white hover:text-space-light transition-colors underline"
+          >
+            Keith Ufumeli
+          </a>
+          .
+        </p>
+      </footer>
     </div>
   );
 }
