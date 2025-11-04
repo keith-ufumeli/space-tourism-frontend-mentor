@@ -1,8 +1,35 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useData } from '@/hooks/useData';
 import { technologyImages } from '@/data/imageMap';
 import { cn } from '@/lib/utils';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
+
+const imageVariants = {
+  initial: { opacity: 0, scale: 0.9 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.9 },
+};
+
+const contentVariants = {
+  initial: { opacity: 0, x: 20 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: -20 },
+};
+
+const containerVariants = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
 
 export function Technology() {
   const { technology } = useData();
@@ -22,25 +49,43 @@ export function Technology() {
   const imageSrc = isMobile ? techImage?.landscape : techImage?.portrait;
 
   return (
-    <div className="container mx-auto px-6 md:px-10 lg:px-12 pb-12 md:pb-16 lg:pb-24">
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={{ duration: 0.4 }}
+      className="container mx-auto px-6 md:px-10 lg:px-12 pb-12 md:pb-16 lg:pb-24"
+    >
       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-20">
         {/* Page Title */}
-        <div className="mb-8 md:mb-12 lg:mb-0 lg:flex-1">
+        <motion.div
+          variants={contentVariants}
+          className="mb-8 md:mb-12 lg:mb-0 lg:flex-1"
+        >
           <h2 className="font-barlow-condensed text-space-white text-base md:text-xl lg:text-2xl tracking-[2.7px] md:tracking-[3.38px] uppercase text-center lg:text-left">
             <span className="font-bold text-space-white/25 mr-4">03</span>
             Space launch 101
           </h2>
-        </div>
+        </motion.div>
 
         {/* Content */}
         <div className="flex flex-col lg:flex-row items-center lg:items-start lg:gap-20">
           {/* Technology Image */}
           <div className="mb-8 md:mb-12 lg:mb-0 lg:flex-1 w-full lg:order-3">
-            <img
-              src={imageSrc}
-              alt={tech.name}
-              className="w-full h-[170px] md:h-[310px] lg:h-[527px] object-cover lg:object-contain animate-fade-in"
-            />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={`${tech.name}-${isMobile ? 'landscape' : 'portrait'}`}
+                variants={imageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.5 }}
+                src={imageSrc}
+                alt={tech.name}
+                className="w-full h-[170px] md:h-[310px] lg:h-[527px] object-cover lg:object-contain"
+              />
+            </AnimatePresence>
           </div>
 
           {/* Technology Info */}
@@ -68,22 +113,43 @@ export function Technology() {
                   value={item.name}
                   className="mt-0 text-center lg:text-left lg:flex-1"
                 >
-                  <p className="font-barlow-condensed text-space-light text-sm md:text-base tracking-[2.36px] uppercase mb-2 md:mb-4">
-                    The terminology...
-                  </p>
-                  <h3 className="font-bellefair text-space-white text-[24px] md:text-[40px] lg:text-[56px] mb-4 md:mb-6 uppercase">
-                    {item.name}
-                  </h3>
-                  <p className="font-barlow text-space-light text-[15px] md:text-base lg:text-lg leading-6 md:leading-7 lg:leading-8 max-w-md">
-                    {item.description}
-                  </p>
+                  <AnimatePresence mode="wait">
+                    {item.name === selectedTechnology && (
+                      <motion.div
+                        key={item.name}
+                        variants={containerVariants}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                      >
+                        <motion.p
+                          variants={contentVariants}
+                          className="font-barlow-condensed text-space-light text-sm md:text-base tracking-[2.36px] uppercase mb-2 md:mb-4"
+                        >
+                          The terminology...
+                        </motion.p>
+                        <motion.h3
+                          variants={contentVariants}
+                          className="font-bellefair text-space-white text-[24px] md:text-[40px] lg:text-[56px] mb-4 md:mb-6 uppercase"
+                        >
+                          {item.name}
+                        </motion.h3>
+                        <motion.p
+                          variants={contentVariants}
+                          className="font-barlow text-space-light text-[15px] md:text-base lg:text-lg leading-6 md:leading-7 lg:leading-8 max-w-md"
+                        >
+                          {item.description}
+                        </motion.p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </TabsContent>
               ))}
             </Tabs>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

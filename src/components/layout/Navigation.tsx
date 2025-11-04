@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -25,7 +26,7 @@ export function Navigation() {
 
   const NavLinks = ({ mobile = false }: { mobile?: boolean }) => (
     <>
-      {navigationItems.map((item) => {
+      {navigationItems.map((item, index) => {
         const active = isActive(item.path);
         const linkClasses = mobile
           ? cn(
@@ -33,24 +34,37 @@ export function Navigation() {
               active && 'border-space-white'
             )
           : cn(
-              'relative py-8 text-space-white font-barlow-condensed text-sm tracking-[2.36px] uppercase transition-colors hover:text-space-white/80 focus:outline-none focus:ring-2 focus:ring-space-white focus:ring-offset-2 focus:ring-offset-space-dark',
-              active && "after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-space-white"
+              'relative py-8 text-space-white font-barlow-condensed text-sm tracking-[2.36px] uppercase transition-colors hover:text-space-white/80 focus:outline-none focus:ring-2 focus:ring-space-white focus:ring-offset-2 focus:ring-offset-space-dark'
             );
 
         return (
-          <Link
+          <motion.div
             key={item.path}
-            to={item.path}
-            className={linkClasses}
-            onClick={() => mobile && setIsOpen(false)}
-            aria-current={active ? 'page' : undefined}
-            tabIndex={0}
+            initial={mobile ? { opacity: 0, x: 20 } : false}
+            animate={mobile ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: mobile ? index * 0.1 : 0 }}
           >
-            <span className={mobile ? 'font-bold mr-2' : 'font-bold mr-3 hidden md:inline'}>
-              {item.number}
-            </span>
-            {item.label}
-          </Link>
+            <Link
+              to={item.path}
+              className={linkClasses}
+              onClick={() => mobile && setIsOpen(false)}
+              aria-current={active ? 'page' : undefined}
+              tabIndex={0}
+            >
+              <span className={mobile ? 'font-bold mr-2' : 'font-bold mr-3 hidden md:inline'}>
+                {item.number}
+              </span>
+              {item.label}
+              {!mobile && active && (
+                <motion.div
+                  layoutId="activeIndicator"
+                  className="absolute bottom-0 left-0 right-0 h-1 bg-space-white"
+                  initial={false}
+                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                />
+              )}
+            </Link>
+          </motion.div>
         );
       })}
     </>
@@ -66,9 +80,15 @@ export function Navigation() {
       
       <div className="flex items-center lg:flex-1 lg:relative">
         {/* Logo */}
-        <Link to="/" className="mt-6 md:mt-0 lg:mt-0 relative z-30" aria-label="Home">
-          <img src={logo} alt="Space Tourism Logo" className="h-10 w-10 md:h-12 md:w-12" />
-        </Link>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Link to="/" className="mt-6 md:mt-0 lg:mt-0 relative z-30" aria-label="Home">
+            <img src={logo} alt="Space Tourism Logo" className="h-10 w-10 md:h-12 md:w-12" />
+          </Link>
+        </motion.div>
       </div>
 
       {/* Desktop Navigation - reduced background opacity to allow line visibility */}

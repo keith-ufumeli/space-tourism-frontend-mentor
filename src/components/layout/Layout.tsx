@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Navigation } from './Navigation';
 import homeMobile from '@/assets/home/background-home-mobile.jpg';
 import homeTablet from '@/assets/home/background-home-tablet.jpg';
@@ -57,24 +58,45 @@ export function Layout({ children }: LayoutProps) {
     <div className="min-h-screen relative">
       {/* Background Images */}
       <div className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat">
-        <img
-          src={backgrounds.mobile}
-          alt=""
-          className="block md:hidden w-full h-full object-cover"
-          aria-hidden="true"
-        />
-        <img
-          src={backgrounds.tablet}
-          alt=""
-          className="hidden md:block lg:hidden w-full h-full object-cover"
-          aria-hidden="true"
-        />
-        <img
-          src={backgrounds.desktop}
-          alt=""
-          className="hidden lg:block w-full h-full object-cover"
-          aria-hidden="true"
-        />
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={`${bgKey}-mobile`}
+            src={backgrounds.mobile}
+            alt=""
+            className="block md:hidden w-full h-full object-cover"
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          />
+        </AnimatePresence>
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={`${bgKey}-tablet`}
+            src={backgrounds.tablet}
+            alt=""
+            className="hidden md:block lg:hidden w-full h-full object-cover"
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          />
+        </AnimatePresence>
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={`${bgKey}-desktop`}
+            src={backgrounds.desktop}
+            alt=""
+            className="hidden lg:block w-full h-full object-cover"
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          />
+        </AnimatePresence>
       </div>
 
       {/* Navigation */}

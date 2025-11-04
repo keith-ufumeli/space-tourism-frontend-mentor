@@ -1,8 +1,35 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useData } from '@/hooks/useData';
 import { crewImages } from '@/data/imageMap';
 import { cn } from '@/lib/utils';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
+
+const imageVariants = {
+  initial: { opacity: 0, x: 50 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: -50 },
+};
+
+const contentVariants = {
+  initial: { opacity: 0, x: -20 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 20 },
+};
+
+const containerVariants = {
+  animate: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 export function Crew() {
   const { crew } = useData();
@@ -12,25 +39,43 @@ export function Crew() {
   const crewImage = crewImages[crewMember.name as keyof typeof crewImages];
 
   return (
-    <div className="container mx-auto px-6 md:px-10 lg:px-12 pb-12 md:pb-16 lg:pb-24">
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={{ duration: 0.4 }}
+      className="container mx-auto px-6 md:px-10 lg:px-12 pb-12 md:pb-16 lg:pb-24"
+    >
       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-20">
         {/* Page Title */}
-        <div className="mb-8 md:mb-12 lg:mb-0">
+        <motion.div
+          variants={contentVariants}
+          className="mb-8 md:mb-12 lg:mb-0"
+        >
           <h2 className="font-barlow-condensed text-space-white text-base md:text-xl lg:text-2xl tracking-[2.7px] md:tracking-[3.38px] uppercase text-center lg:text-left">
             <span className="font-bold text-space-white/25 mr-4">02</span>
             Meet your crew
           </h2>
-        </div>
+        </motion.div>
 
         {/* Content */}
         <div className="flex flex-col lg:flex-row-reverse items-center lg:items-start lg:gap-20">
           {/* Crew Image */}
           <div className="mb-8 md:mb-12 lg:mb-0 lg:flex-1 border-b border-space-white/20 lg:border-0 pb-8 lg:pb-0">
-            <img
-              src={crewImage?.webp || crewImage?.png}
-              alt={`${crewMember.name}, ${crewMember.role}`}
-              className="w-[177px] h-[222px] md:w-[456px] md:h-[572px] lg:w-[568px] lg:h-[712px] object-contain animate-fade-in"
-            />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={crewMember.name}
+                variants={imageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.5 }}
+                src={crewImage?.webp || crewImage?.png}
+                alt={`${crewMember.name}, ${crewMember.role}`}
+                className="w-[177px] h-[222px] md:w-[456px] md:h-[572px] lg:w-[568px] lg:h-[712px] object-contain"
+              />
+            </AnimatePresence>
           </div>
 
           {/* Crew Info */}
@@ -51,22 +96,43 @@ export function Crew() {
 
               {crew.map((member) => (
                 <TabsContent key={member.name} value={member.name} className="mt-0">
-                  <p className="font-bellefair text-space-white/50 text-base md:text-2xl lg:text-3xl uppercase mb-2 md:mb-4">
-                    {member.role}
-                  </p>
-                  <h3 className="font-bellefair text-space-white text-[24px] md:text-[40px] lg:text-[56px] mb-4 md:mb-6">
-                    {member.name}
-                  </h3>
-                  <p className="font-barlow text-space-light text-[15px] md:text-base lg:text-lg leading-6 md:leading-7 lg:leading-8 max-w-md">
-                    {member.bio}
-                  </p>
+                  <AnimatePresence mode="wait">
+                    {member.name === selectedCrew && (
+                      <motion.div
+                        key={member.name}
+                        variants={containerVariants}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                      >
+                        <motion.p
+                          variants={contentVariants}
+                          className="font-bellefair text-space-white/50 text-base md:text-2xl lg:text-3xl uppercase mb-2 md:mb-4"
+                        >
+                          {member.role}
+                        </motion.p>
+                        <motion.h3
+                          variants={contentVariants}
+                          className="font-bellefair text-space-white text-[24px] md:text-[40px] lg:text-[56px] mb-4 md:mb-6"
+                        >
+                          {member.name}
+                        </motion.h3>
+                        <motion.p
+                          variants={contentVariants}
+                          className="font-barlow text-space-light text-[15px] md:text-base lg:text-lg leading-6 md:leading-7 lg:leading-8 max-w-md"
+                        >
+                          {member.bio}
+                        </motion.p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </TabsContent>
               ))}
             </Tabs>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
